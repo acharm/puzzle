@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>тест</title>
+  <style>
+    :root {
+      --bg: #f6faf6;
+      --panel: #ffffff;
+      --text: #1e2a22;
+      --muted: #6a786f;
+      --line: #dbe8dd;
+      --soft: #edf6ef;
+      --accent: #6c8d71;
+      --accent-strong: #4d6a53;
+      --shadow: 0 16px 40px rgba(47, 73, 55, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top left, #f8fff8 0, #f6faf6 36%, #f2f7f3 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 56px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 28px;
+      margin-top: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(127, 165, 134, 0.18), rgba(127, 165, 134, 0.02));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--accent-strong);
+      border: 1px solid var(--line);
+      background: var(--soft);
+      border-radius: 999px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 35px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      max-width: 680px;
+    }
+    .hero .sub {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 720px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 24px;
+    }
+
+    .mini-panel {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fbfefb, #f3f8f4);
+    }
+
+    .mini-panel h3 {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .mini-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+        .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .hero-minimal {
+      min-height: 48vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 42px 20px;
+    }
+    .hero-minimal::after { display: none; }
+    .hero-minimal h1 {
+      max-width: none;
+      margin: 0;
+    }
+    .hero-actions-single {
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+      font: inherit;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
+
+    .btn-primary {
+      background: var(--accent-strong);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(77, 106, 83, 0.18);
+      font-weight: 700;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--accent-strong);
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .test-wrap,
+    .result-wrap {
+      margin-top: 22px;
+      padding: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .progress {
+      flex: 1;
+      min-width: 240px;
+      height: 10px;
+      background: #edf3ee;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #97b59c, #5b7a62);
+      border-radius: inherit;
+      transition: width .22s ease;
+    }
+
+    .progress-text {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .question {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff, #fbfdfb);
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+
+    .question-title {
+      font-size: 16px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      transition: border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+
+    .option:hover {
+      border-color: #bcd0c1;
+      background: #f8fcf9;
+    }
+
+    .option input {
+      margin-top: 3px;
+      accent-color: var(--accent-strong);
+      transform: scale(1.1);
+      flex-shrink: 0;
+    }
+
+    .option-code {
+      font-weight: 800;
+      color: var(--accent-strong);
+      min-width: 22px;
+    }
+
+    .actions-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      padding-top: 6px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .result-hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .type-box,
+    .score-box,
+    .dim-box,
+    .top3-box,
+    .about-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff, #fbfdfb);
+    }
+
+    .type-kicker {
+      font-size: 12px;
+      color: var(--accent-strong);
+      margin-bottom: 8px;
+      letter-spacing: .05em;
+    }
+
+    .type-name {
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .type-subname {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .match {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+
+    .type-desc {
+      margin-top: 18px;
+      line-height: 1.85;
+      font-size: 15px;
+      color: #304034;
+    }
+
+    .score-box h3,
+    .dim-box h3,
+    .top3-box h3,
+    .about-box h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .score-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .score-item .k {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .score-item .v {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent-strong);
+    }
+
+    .dim-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .dim-pill {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .dim-pill .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .dim-pill .value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent-strong);
+    }
+
+    .top3-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .top3-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .top3-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .top3-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .top3-score {
+      color: var(--accent-strong);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .about-box p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    
+    .result-layout {
+      display: grid;
+      gap: 18px;
+    }
+    .result-top {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .poster-box, .type-box, .analysis-box, .dim-box, .note-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff, #fbfdfb);
+    }
+        .poster-box {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      min-height: 280px;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at top right, rgba(127,165,134,0.16), rgba(127,165,134,0) 40%),
+        linear-gradient(180deg, #ffffff, #f7fbf8);
+    }
+    .poster-box::after {
+      content: "";
+      position: absolute;
+      right: -46px;
+      bottom: -46px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(127,165,134,0.12), rgba(127,165,134,0.01));
+      pointer-events: none;
+    }
+    .poster-image {
+      width: 100%;
+      min-height: 220px;
+      max-height: 460px;
+      object-fit: contain;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.75);
+      position: relative;
+      z-index: 1;
+    }
+    .poster-box.no-image .poster-image {
+      display: none;
+    }
+    .poster-caption {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+    .type-kicker {
+      font-size: 12px;
+      color: var(--accent-strong);
+      margin-bottom: 8px;
+      letter-spacing: .06em;
+    }
+    .type-name {
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    .type-subname {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .match {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      color: var(--accent-strong);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .analysis-box h3, .dim-box h3, .note-box h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .result-actions {
+      margin-top: 22px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .analysis-box p {
+      margin: 0;
+      color: #304034;
+      font-size: 15px;
+      line-height: 1.9;
+      white-space: pre-wrap;
+    }
+    .dim-list {
+      display: grid;
+      gap: 12px;
+    }
+    .dim-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+    .dim-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .dim-item-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .dim-item-score {
+      color: var(--accent-strong);
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .dim-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .note-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .author-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff, #fbfdfb);
+      overflow: hidden;
+    }
+    .author-box summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .author-box summary::-webkit-details-marker { display: none; }
+    .author-box summary::after {
+      content: 'open';
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-strong);
+      border: 1px solid var(--line);
+      background: var(--soft);
+      padding: 6px 10px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .author-box[open] summary::after {
+      content: 'close';
+    }
+    .author-content {
+      border-top: 1px solid var(--line);
+      padding: 0 18px 18px;
+    }
+    .author-content p {
+      margin: 14px 0 0;
+      color: #304034;
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .result-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    @media (max-width: 860px) {
+      .result-top { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid,
+      .result-hero {
+        grid-template-columns: 1fr;
+      }
+      .dim-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 600px) {
+      .shell { padding: 14px 12px 42px; }
+      .hero, .test-wrap, .result-wrap { padding: 16px; }
+      .hero h1 { font-size: 32px; }
+      .question-title { font-size: 15px; }
+      .dim-grid,
+      .score-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section id="intro" class="screen active">
+      <div class="hero card hero-minimal">
+        <h1>мяо-мяо-мяо, завут меня котенока королева. </h1>
+        <div class="hero-actions hero-actions-single">
+          <button id="startBtn" class="btn-primary">Начать Тест</button>
+        </div>
+        <div style="padding-top: 2rem; display: flex; flex-direction: column;">
+          <span>
+            Pедактор：
+            <a href="https://vk.com/christenkb">Kristina Burnashova</a>; <a href="https://vk.com/id389290081">Mika</a>
+          </span>
+          <span>
+            котенок королева может видеть в твоём сердце, и в этот момент в твоём сердце появляется человек.
+          </span>
+          <span>
+            Итак, каким человеком он является?
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section id="test" class="screen">
+      <div class="test-wrap card">
+        <div class="topbar">
+          <div class="progress"><span id="progressBar"></span></div>
+          <div class="progress-text" id="progressText">0 / 31</div>
+        </div>
+
+        <div id="questionList" class="question-list"></div>
+
+        <div class="actions-bottom">
+          <div class="hint" id="testHint">Нужно выбрать все варианты. Мир и так достаточно хаотичен, по крайней мере, нужно полностью выполнить задание.</div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="backIntroBtn" class="btn-secondary">return</button>
+            <button id="submitBtn" class="btn-primary" disabled>submit & view result</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="result" class="screen">
+      <div class="result-wrap card">
+        <div class="result-layout">
+          <div class="result-top">
+            <div class="poster-box" id="posterBox">
+              <img id="posterImage" class="poster-image" alt="Типы личности" />
+              <div id="posterCaption" class="poster-caption">Не волнуйся, контроллер сработает в критический момент.</div>
+            </div>
+
+            <div class="type-box">
+              <div class="type-kicker" id="resultModeKicker">Его основной тип</div>
+              <div class="type-name" id="resultTypeName">CTRL（контроллер）</div>
+              <div class="match" id="matchBadge">соответствие 92%</div>
+              <div class="type-subname" id="resultTypeSub">Системные заметки будут отображаться здесь.</div>
+            </div>
+          </div>
+
+          <div class="analysis-box">
+            <h3>Простое толкование этой личности</h3>
+            <p id="resultDesc"></p>
+          </div>
+
+          <div class="dim-box">
+            <h3>Оценка по пятнадцати измерениям</h3>
+            <div id="dimList" class="dim-list"></div>
+          </div>
+
+          <div class="note-box">
+            <h3>friendly tips: </h3>
+            <p id="funNote">本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。</p>
+          </div>
+
+                    <details class="author-box">
+            <summary>from Mika: </summary>
+            <div class="author-content">
+              <p>I am language learner, if you find mistakes in sentence. it doesn't matter. he always do this.</p>
+              <p>Не принимайте эти тесты всерьёз, иначе вы будете подвергнуты равной атаке со стороны автора.</p>
+              <p>Я хочу, чтобы тебе было интересно решать эти задания и чтобы ты тоже чувствовал себя счастливым</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="result-actions">
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="restartBtn" class="btn-secondary">тест снова</button>
+            <button id="toTopBtn" class="btn-primary">return</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+const dimensionMeta = {
+    S1: { name: 'S1 self-confidence',           model: 'self model',        name2: 'S1 自尊自信',       model2: '自我模型' },
+    S2: { name: 'S2 Self-clarity',              model: 'self model',        name2: 'S2 自我清晰度',     model2: '自我模型' },
+    S3: { name: 'S3 Core values',               model: 'self model',        name2: 'S3 核心价值',       model2: '自我模型' },
+    E1: { name: 'E1 Attachment security',       model: 'emotion model',     name2: 'E1 依恋安全感',     model2: '情感模型' },
+    E2: { name: 'E2 Emotional Investment',      model: 'emotion model',     name2: 'E2 情感投入度',     model2: '情感模型' },
+    E3: { name: 'E3 Boundaries & Dependencies', model: 'emotion model',     name2: 'E3 边界与依赖',     model2: '情感模型' },
+    A1: { name: 'A1 Worldview inclination',     model: 'attitude model',    name2: 'A1 世界观倾向',     model2: '态度模型' },
+    A2: { name: 'A2 Rules & Flexibility',       model: 'attitude model',    name2: 'A2 规则与灵活度',   model2: '态度模型' },
+    A3: { name: 'A3 Sense of meaning in life',  model: 'attitude model',    name2: 'A3 人生意义感',     model2: '态度模型' },
+    Ac1: { name: 'Ac1 Motivation-oriented',     model: 'activity model',    name2: 'Ac1 动机导向',      model2: '行动驱力模型' },
+    Ac2: { name: 'Ac2 Decision-making style',   model: 'activity model',    name2: 'Ac2 决策风格',      model2: '行动驱力模型' },
+    Ac3: { name: 'Ac3 Execution mode',          model: 'activity model',    name2: 'Ac3 执行模式',      model2: '行动驱力模型' },
+    So1: { name: 'So1 Social initiative',       model: 'social model',      name2: 'So1 社交主动性',     model2: '社交模型' },
+    So2: { name: 'So2 Sense of interpersonal boundaries',   model: 'social model', name2: 'So2 人际边界感', model2: '社交模型' },
+    So3: { name: 'So3 Expression and authenticity',         model: 'social model', name2: 'So3 表达与真实度', model2: '社交模型' }
+};
+
+const questions = [
+    { id: 'q1', dim: 'S1',
+        text: 'Море не всегда спокойно, он редко говорит о прошлом опыте, иногда он чувствителен и легко сердится.',
+        options: [
+            { value: 1, label: 'Я уверен это очень похоже на него' },
+            { value: 2, label: 'Он сейчас очень хорошою ' },
+            { value: 3, label: 'Он никогда так не делает.' }
+        ]
+    },
+    { id: 'q2', dim: 'S1',
+        text: 'Я не могу сразу назвать две его черты, которых нет ни у кого другого.',
+        options: [
+            { value: 3, label: 'могу' },
+            { value: 2, label: 'нужно немного подумать' },
+            { value: 1, label: 'не могу' }
+        ]
+    },
+    { id: 'q3', dim: 'S2',
+        text: 'Он очень любит читать книги; если он наткнётся на хорошую книгу, это как будто он путешествует во времени и разговаривает с хорошими друзьями.',
+        options: [
+            { value: 1, label: 'Не согласен' },
+            { value: 2, label: 'Нейтрально' },
+            { value: 3, label: 'Согласен' }
+        ]
+    },
+    { id: 'q4', dim: 'S2',
+        text: 'В его глазах был свет, который могли видеть все.',
+        options: [
+            { value: 3, label: 'Согласен' },
+            { value: 2, label: 'Нейтрально' },
+            { value: 1, label: 'Не согласен' }
+        ]
+    },
+    { id: 'q5', dim: 'S3',
+        text: 'Он very знает что he is doing, Он решительно движется к своей цели',
+        options: [
+            { value: 1, label: 'Не согласен' },
+            { value: 2, label: 'Нейтрально' },
+            { value: 3, label: 'Согласен' }
+        ]
+    },
+    { id: 'q6', dim: 'S3',
+        text: 'Он никогда не заботится о мнении других.',
+        options: [
+            { value: 3, label: 'Согласен' },
+            { value: 2, label: 'Нейтрально' },
+            { value: 1, label: 'Не согласен' }
+        ]
+    },
+// 7
+    { id: 'q7', dim: 'E1',
+        text: 'Его дом находится недалеко от катка, в прошлую субботу ты звонил ему, когда катался на коньках, и приглашал поиграть вместе, он сказал, что принимает душ; сегодня суббота, ты звонишь ему, чтобы пойти кататься на коньках, он говорит, что принимает душ.',
+        options: [
+            { value: 1, label: '7*24 часи, в душе? Он лжет.' },
+            { value: 2, label: 'Возможно, он изучает китайский, возможно, он изучает английский, возможно, ему не нравится мороженое, которое продается на катке.' },
+            { value: 3, label: 'Оказывается, он моется каждую субботу. :P'}
+        ]
+    },
+    { id: 'q8', dim: 'E1',
+        text: 'Он всегда помнит день рождения своих друзей',
+        options: [
+            { value: 3, label: 'нетууу' },
+            { value: 2, label: 'иногда' },
+            { value: 1, label: 'дааааа' }
+        ]
+    },
+    { id: 'q9', dim: 'E2',
+        text: 'Он всем своим бывшим девушкам говорил, что всю жизнь будет любить только её.',
+        options: [
+            { value: 1, label: 'нето' },
+            { value: 2, label: 'might? ' },
+            { value: 3, label: 'дааа' }
+        ]
+    },
+    { id: 'q10', dim: 'E2',
+        text: 'Он считает себя очень красивым, будет иметь много денег, очень ответственным, с очень хорошим физическим состоянием и очень нежным, с высоким IQ и высоким EQ и высоким (A-Z)Q.',
+        options: [
+            { value: 3, label: 'no' },
+            { value: 2, label: 'might' },
+            { value: 1, label: 'da' }
+        ]
+    },
+    { id: 'q11', dim: 'E3',
+        text: 'Он глупо милый, он думает, что сможет вырастить очень сладкое яблоню, он испечет самый вкусный в мире хлеб, он натренирует рыбу, которая умеет играть в баскетбол.',
+        options: [
+            { value: 1, label: 'it\'s him. ' },
+            { value: 2, label: 'it doesn\'t matter' },
+            { value: 3, label: 'Ударить его по лицу кулаком, может быть, это его немного протрезвит' }
+        ]
+    },
+    { id: 'q12', dim: 'E3',
+        text: 'Он ценит чувства слушателей',
+        options: [
+            { value: 3, label: 'sure' },
+            { value: 2, label: 'sometimes' },
+            { value: 1, label: 'might' }
+        ]
+    },
+// 13
+    { id: 'q13', dim: 'A1',
+        text: 'Большинство людей добрые',
+        options: [
+            { value: 1, label: 'он сказал о этой: на самом деле людей с злыми намерениями больше, чем тех, кто любит есть бананы.' },
+            { value: 2, label: '"может быть", сказал он, "стандарты разные, ответы разные"' },
+            { value: 3, label: 'да, он согласен' }
+        ]
+    },
+    { id: 'q14', dim: 'A1',
+        text: 'Одна бабушка сказала ему: холодно, молодым людям нельзя ходить без шапки.',
+        options: [
+            { value: 3, label: 'Он вежливо отвечает на доброту и говорит спасибо. ' },
+            { value: 2, label: 'Он не чувствует себя холодно, потому что посмотрел прогноз погоды,' },
+            { value: 1, label: 'Он притворился, что не слышал.' },
+        ]
+    },
+    { id: 'q15', dim: 'A2',
+        text: 'На каждой пачке сигарет написано: «Курение вредит вашему здоровью». Почему на бутылках с алкоголем нет такой же надписи?',
+        options: [
+            { value: 1, label: 'Он сказал, почему на бутылке вина написано: курение вредит здоровью.' },
+            { value: 2, label: 'Иногда человеку нужно немного расслабиться' },
+            { value: 3, label: 'Он пропагандирует здоровый образ жизни' }
+        ]
+    },
+    { id: 'q16', dim: 'A2',
+        text: 'Плохие правила лучше, чем их отсутствие, а он любит нарушать правила.',
+        options: [
+            { value: 3, label: 'Ломать старые правила, устанавливать новые правила, добиваться того, чтобы все признали новые правила, и только когда он убедится, что каждый шаг может быть выполнен по плану, он будет осторожно ломать правила' },
+            { value: 2, label: 'Он держится в стороне' },
+            { value: 1, label: 'Ес, это он' }
+        ]
+    },
+    { id: 'q17', dim: 'A3',
+        text: 'Он делает вещи целенаправленно и планомерно.',
+        options: [
+            { value: 1, label: 'нет, это не он' },
+            { value: 2, label: 'Я не уверен в его типе' },
+            { value: 3, label: 'Ес, это он' }
+        ]
+    },
+    { id: 'q18', dim: 'A3',
+        text: 'Смысл жизни (разные люди разные) — есть, когда голоден, и спать, когда устал.',
+        options: [
+            { value: 3, label: 'У меня нет таких друзей' },
+            { value: 2, label: 'Если слишком сложно, будет очень усталость, но и не должно быть так просто.' },
+            { value: 1, label: 'Он такой одноклеточный организм, и это мой друг.(Я позабочусь о нём)' }
+        ]
+    },
+// 19
+    { id: 'q19', dim: 'Ac1',
+        text: 'Он занимается делами для того, чтобы прогрессировать и развиваться, а не чтобы избегать проблем и уклоняться от ответственности.',
+        options: [
+            { value: 1, label: 'это не он' },
+            { value: 2, label: 'Я не уверен' },
+            { value: 3, label: 'Он действительно такой' }
+        ]
+    },
+    { id: 'q20', dim: 'Ac1',
+        text: 'Почему кто-то может оставаться в ванной больше часа и не выходить?',
+        options: [
+            { value: 3, label: 'Ему нужно немного личного пространства, чтобы избавиться от некоторых негативных эмоций.' },
+            { value: 2, label: 'Переносите больше мусора наружу, смывайте водой, вес значительно снижается, конечно, он фантазирует.' },
+            { value: 1, label: 'Он сидел на этом, забыв, что делает.' }
+        ]
+    },
+    { id: 'q21', dim: 'Ac2',
+        text: 'Он решительный человек, редко колеблется в делах',
+        options: [
+            { value: 1, label: 'нет, это не он' },
+            { value: 2, label: 'Я не уверен' },
+            { value: 3, label: 'Да, каждый, кто его знает, так думает.' }
+        ]
+    },
+    { id: 'q22', dim: 'Ac2',
+        text: 'Нет времени объяснять, выбери правильный ответ.',
+        options: [
+            { value: 3, label: 'он выбрал C без всякой причины.' },
+            { value: 2, label: 'У него на завтрак был банан, ему нравится играть в баскетбол, это причина, поэтому выбери B' },
+            { value: 1, label: 'он провел много времени, подумал о многих математических формулах, и, наконец, он выбрал A' },
+        ]
+    },
+    { id: 'q23', dim: 'Ac3',
+        text: 'Он выглядит как человек с высокой исполнительной способностью. Но в глубине души ты думаешь:',
+        options: [
+            { value: 1, label: 'Он эффективен в выполнении задач, потому что его уже поджали к последнему моменту.' },
+            { value: 2, label: 'И иногда он отличается от того, как выглядит.' },
+            { value: 3, label: 'Да, если что-то идет не по плану, ему очень плохо' }
+        ]
+    },
+    { id: 'q24', dim: 'Ac3',
+        text: 'Он часто действует с планом, ____',
+        options: [
+            { value: 3, label: 'Он очень привержен радости от того, что может завершить всё по плану' },
+            { value: 2, label: 'Иногда он не может выполнить план' },
+            { value: 1, label: 'Только в начале, потому что позже пришлось изменить планы.' },
+        ]
+    },
+// 25
+    { id: 'q25', dim: 'So1',
+        text: 'Он познакомился с некоторыми людьми с такими же увлечениями в интернете и собирается встретиться с ними офлайн.',
+        options: [
+            { value: 1, label: 'Конечно нет, потому что он идеален только в интернете.' },
+            { value: 2, label: 'Если времени и денег будет достаточно, его активность будет выше' },
+            { value: 3, label: 'Он заранее подготовится, а затем будет общаться с друзьями так же, как это показывают в интернете.' }
+        ]
+    },
+    { id: 'q26', dim: 'So1',
+        text: 'Его друг привел некоторых малознакомых друзей поиграть, каково может быть его состояние?',
+        options: [
+            { value: 3, label: 'Друг друга друга тоже друг, он ведет себя довольно открыто.' },
+            { value: 2, label: 'Зависит от другого человека, иногда он тоже может быстро адаптироваться' },
+            { value: 1, label: 'For friends of friends, to become their friend, a process is needed, so at first, maintain a certain distance' }
+        ]
+    },
+    { id: 'q27', dim: 'So2',
+        text: 'Если подходить слишком близко, вы отчетливо почувствуете невидимую преграду вокруг него.',
+        options: [
+            { value: 1, label: 'Не согласен' },
+            { value: 2, label: 'Нейтральный' },
+            { value: 3, label: 'Согласен' }
+        ]
+    },
+    { id: 'q28', dim: 'So2',
+        text: 'Каждый человек стремится устанавливать тесные отношения с людьми, которым он доверяет, как с друзьями, с которыми рос с детства.',
+        options: [
+            { value: 3, label: 'Но он другой' },
+            { value: 2, label: 'У него нет явных склонностей' },
+            { value: 1, label: 'Да, он тоже надеется' },
+        ]
+    },
+    { id: 'q29', dim: 'So3',
+        text: 'Иногда у него явно есть другое, отрицательное мнение по тому же вопросу, но в итоге он его не выражает.',
+        options: [
+            { value: 1, label: 'Это случается редко' },
+            { value: 2, label: 'Возможно, у него есть более веская причина, о которой он не говорит' },
+            { value: 3, label: 'Он не хочет, чтобы другие знали, что он мрачный человек' }
+        ]
+    },
+    { id: 'q30', dim: 'So3',
+        text: 'Он ведет себя по-разному перед разными людьми.',
+        options: [
+            { value: 3, label: 'Согласен' }, 
+            { value: 2, label: 'не уверен' },
+            { value: 1, label: 'Не согласен' }
+        ]
+    }
+];
+
+const specialQuestions = [
+    {
+        id: 'drink_gate_q1',
+        special: true,
+        kind: 'drink_gate',
+        text: 'hobby?',
+        options: [
+            { label: 'вино', value: 1 },
+            { label: 'вода', value: 2 },
+            { label: 'кофе', value: 3 },
+            { label: 'чай', value: 4 }
+        ]
+    },
+    {
+        id: 'drink_gate_q2',
+        special: true,
+        kind: 'drink_trigger',
+        text: '您对饮酒的态度是？',
+        options: [
+            { label: '小酌怡情，喝不了太多。', value: 1 },
+            { label: '我习惯将白酒灌在保温杯，当白开水喝，酒精令我信服。', value: 2 }
+        ]
+    }
+];
+
+const TYPE_LIBRARY = {
+  "CTRL": {
+    "code" : "CTRL",
+    "cn"   : "контроллер",
+    "intro": "Не волнуйся, контроллер сработает в критический момент.",
+    "desc" : "Поздравляем, вы обнаружили самую редкую личность в мире, он — прирожденный противник закона увеличения энтропии во Вселенной! Среди так называемых успешных людей в мире, 99,99% — это его неумелые подражатели. Личность типа controller — это ходячий человекоподобный автоматический менеджер задач, «правила» в глазах обычных людей для него — лишь базовые заводские настройки; то, что простые люди называют «планом», для него — всего лишь случайные наброски по вдохновению. Что значит иметь друга типа controller? Это значит, что ваша навигационная система жизни станет более точной и эффективной. Потому что controller действуют в критический момент. Controller за одну секунду до того, как жизненный поезд пойдет по рельсам не туда, сделает «Ctrl S», чтобы жестко сохранить прогресс, а затем с помощью непреодолимой логики вернут его на правильный путь. Они — последняя резервная копия вашего хаотичного существования, единственная ещё светящаяся кнопка перезагрузки перед коллапсом вселенной."
+  },
+  "ATM-er" : {
+    "code" : "ATM-er",
+    "cn"   : "ATM-er",
+    "intro": "То, что его считают просто очень богатым, — это самое большое заблуждение о нём",
+    "desc" : "Поздравляю, ваш друг обладает одной из самых редких личностей в этом мире. Он может стать необъяснимой тайной финансового мира — да, банкомат не обязательно буквально «выдаёт деньги», но он всегда может «платить». Платить временем, платить усилиями, платить терпением, платить за ночь, которая должна была быть спокойной. Так что, как старый, но надёжный банкомат, в него вставляются чужие тревоги и проблемы, и он выдаёт уверенность: «Все в порядке, я обо всём позабочусь.» Его жизнь — это грандиозное, не признанное сольное шоу дел. Как скала, он стойко переносит лавины требований, и только иногда, поздно ночью, перед счетами — возможно, духовными — он вздыхает: «Ах, это проклятое, неизбежное чувство ответственности.»"
+  },
+  "Dior-s" : {
+    "code" : "Dior-s",
+    "cn"   : "Dior-s",
+    "intro": "Рано или поздно наступит эпоха, принадлежащая Dior-s",
+    "desc" : "Он вовсе не лузер, он является духовным наследником древнегреческого кинического философа Диогена, потерявшегося на много лет, потому что полное название Dior-s — Diogenes' Original Realist - sage. Личность Dior-s выражает полное презрение к современным ловушкам потребительства и PUA-методам успеха. Они не «не стремятся к прогрессу», они давно поняли, что конец любого «стремления к прогрессу» — это всего лишь более изощрённые тюремные стены. У Dior-s есть великая мудрость. Когда другие гонятся за трендами и волны времени сбивают их с ног, Dior-s уже загорает в своей духовной бочке, достигнув высшего состояния «человек-бочка-единство». Они следуют не пустым словам, а законам физики и биологическим инстинктам, проверенным миллионами практик: 1. Лежать удобнее, чем стоять; 2. Когда приходит время еды — нужно есть."
+  },
+  "BOSS": {
+    "code" : "BOSS",
+    "cn"   : "БОСС",
+    "intro": "Дай ему руль, пусть он водит",
+    "desc" : "БОСС — это человек, который всегда держит руль в руках. Даже если бензин кончается, даже если навигатор бредит, Со спокойным выражением лица: «Я за рулем». И действительно доведет машину до пункта назначения. У этой личности есть собственные физические законы — закон вечного восхождения. Личность БОСС видит мир так, как игрок, прошедший игру, смотрит на учебник для новичков. Эффективность — их вера, порядок — их дыхание. Они не «рождаются с харизмой лидера», они сами являются генераторами ауры в человеческом обличии, и в радиусе пяти метров воздух автоматически становится строгим и эффективным. Их «самопревосхождение» примерно равно тому, что обычные люди называют «самоистязанием». Сегодня выучили новый язык, завтра сдали профессиональный сертификат, послезавтра планируют колонизировать Марс. Ты говоришь, что это слишком безумно, а Он посмотрит на тебя, как на слабака: не я слишком жесткий, а ты слишком мягкий."
+  },
+  "THAN-K": {
+    "code": "THAN-K",
+    "cn": "Спаси-бо",
+    "intro": "благодарит небо, благодарит воздух",
+    "desc": "Поздравляем вас, ваш друг обладает самой редкой личностью в мире. Он должен вас благодарить! Благодарить за то, что в этот момент его жизнь напоена жизнью! А если он застрял в пробке по пути на работу? Он также должен сказать: я благодарю за эту пробку, она дает мне больше времени послушать эту замечательную песню и насладиться каждым лицом за окном, искажённым тревогой, что позволяет мне больше ценить внутренний покой. Да, Спаси-бо обладает мягким как нефрит характером и широтой души, как океан. В их глазах нет полностью плохих людей, есть только «друзья, еще не озаренные светом благодарности». Иметь друга Спаси-бо — это как иметь рядом башню бесконечного положительного заряда. Он даже может помочь вам увидеть в плесени на углу стены картину в стиле Ван Гога с ночным небом."
+  },
+  "OH-NO": {
+    "code": "OH-NO",
+    "cn": "О-Нет-ник",
+    "intro": "О нет! Как он может быть этой личностью?! О нет, как он мог повлиять на меня?!",
+    "desc": "«О нет!» — это не крик страха, а проявление высшей мудрости. Обычные люди, увидевшие стакан на краю стола, просто волнуются, а О-Нет-ник видит эпическую катастрофу: «водяное пятно — короткое замыкание — пожар — эвакуация всего здания — экономические убытки — эффект бабочки — конец света». И вот, с голосом, исходящим из глубины души, звучит «О, нет!», и они молниеносно перемещают стакан в центр стола, а потом кладут под него впитывающую подставку. О-Нет-ник питает почти параноидальное уважение к «границам»: твоё — твоё, моё — моё. Все несчастья и риски уже в его «О, нет!» были подавлены в зародыше. Они — хранители порядка, последние достойные люди в мире хаоса с предельно натянутыми нервами."
+  },
+  "GOGO": {
+    "code": "GOGO",
+    "cn": "Давай-ист",
+    "intro": "Давай~Давай~",
+    "desc": "Исследования показали, что структура мозга у личности Давай-иста принципиально отличается от обычного человека. Давай-ист живет в крайнем мире «видишь — получаешь», его жизненный девиз прост и жесток до ужаса: стоит мне закрыть глаза, как небо становится черным; стоит мне потратить все деньги, и у меня не остается денег; стою я на пешеходном переходе — значит, сейчас я пешеход. Логическая цепочка замкнута, и возразить невозможно. Пока другие спорят о том, что появилось раньше — курица или яйцо, Давай-ист уже превратил и курицу, и яйцо в «высшую кулинарную мудрость: курица рождает яйцо, яйцо рождает курицу». Они не «решают проблемы», они «убирают задачи из списка дел». Для них в мире есть только два состояния: выполнено и то, что я вот-вот выполню."
+  },
+  "SEXY": {
+    "code": "SEXY",
+    "cn": "SEXY",
+    "intro": "Он просто врожденно сексуальное существо!",
+    "desc": "Когда он входит в комнату, система освещения автоматически распознает его как врожденное воплощение сексуальности и самостоятельно приглушает яркость, чтобы избежать траты энергии. Когда он улыбается, он превращается в улыбающееся воплощение сексуальности, а влажность окружающего воздуха заметно снижается, потому что водяной пар конденсируется в сердечки в глазах людей. Любой легко начинает уделять его существованию чрезмерное внимание. Говорят, если собрать достаточное количество личностей SEXY на вечеринку, их совместная энергия обаяния будет достаточно сильной, чтобы временно искривить структуру пространства-времени, создавая у участников иллюзию счастья «время замедлилось». Им не нужно прилагать особых усилий для выражения себя, во многих случаях само их существование уже похоже на чрезмерно великолепное стихотворное произведение."
+  },
+  "LOVE-R": {
+    "code": "LOVE-R",
+    "cn": "любов-ник",
+    "intro": "Полная любовь, поэтому реальность кажется немного пустынной.",
+    "desc": "любов-ник — это редкий вид, сохранившийся с древнейших мифических времен, его существование менее вероятно, чем поймать Посейдона в унитазе. Он практически последний и самый несвоевременный странствующий поэт эпохи железного леса. Потому что его эмоциональный процессор не бинарный, а радужный. Один лист, для обычного человека — это просто «пришла осень», а для любов-ника — это тринадцатимодовая трагикомедия о цикле, жертве и безмолвной любви. Его внутренний мир похож на парк аттракционов, который никогда не закрывается; всю жизнь он ищет того, кто сможет понять карту парка и готов вместе с ним кататься на карусели до края вселенной."
+  },
+  "MUM": {
+    "code": "MUM",
+    "cn": "мама",
+    "intro": "Возможно... я могу назвать его мама....?",
+    "desc": "Поздравляем, ваш друг оказался самой редкой материнской личностью в мире. Да, ещё до того, как возник хаос, до того как время получило имя, до того как первая звезда отрыгнула в первый раз, уже существовала мама. Основная черта материнской личности — это нежность, она умеет чувствовать эмоции, обладает невероятной эмпатией, знает, когда нужно остановиться, а когда сказать себе «ладно». Мама как врач, исцеляет чужую печаль. Только жаль, что когда мама плачет, лекарство для себя она всегда дозирует меньше, чем для других. Мама к себе нежна, но часто с уступкой."
+  },
+  "FAKE": {
+    "code": "FAKE",
+    "cn": "манекен",
+    "intro": "Уже, людей нет.",
+    "desc": "SCP Фонд экстренный отчет: Объект номер SCP-CN-████ «Манекен». В социальных ситуациях манекен — это универсальный мастер, потому что он меняет маски личности быстрее, чем сменяет метод ввода на телефоне. В одну секунду он — верный друг, открытый до конца; в следующую секунду приходит начальник — и он мгновенно превращается в спокойного и надежного сотрудника, даже блеск и завитки на лице подстраиваются. Думаешь, ты завел настоящего друга, который тебя понимает? Проснись. Тебе просто повезло столкнуться с искусно маскирующимся, высокоэффективным биороботом. Когда ночь наступает и все вокруг замирает, искусственное существо снимает маски одну за другой, и в конце оказывается, что под масками пусто, а именно эти маски и составляют его суть."
+  },
+  "OJBK": {
+    "code": "OJBK",
+    "cn": "не-важно",
+    "intro": "Я сказал не-важно, это значит О-блядь-К.",
+    "desc": "Давайте прямо разберём грубую суть этого слова: О-блядь-К. Это уже не личность, а философия управления. Когда смертные сталкиваются с дилеммой «суп или хлеб в полдень», их мозг яростно сжигает калории; тогда как личность вроде не-важно с равнодушием, как при проверке экзамена, легко произносит два слова: всё равно. Это не отсутствие мнения, это говорит вам: ваши решения, смертные, для меня, короля, не имеют значения. Почему не спорить? Потому что обсуждать будущее Вселенной с инфузорией-туфелькой бессмысленно. Почему не заострять внимание на деталях? Потому что императору всё равно, будет ли пыль под его ногами сдута ветром влево или вправо."
+  },
+  "MALO": {
+    "code": "MALO",
+    "cn": "吗喽",
+    "intro": "人生是个副本，而我只是一只吗喽。",
+    "desc": "朋友，你不是“童心未泯”，你压根就没进化。你的灵魂还停留在那个挂在树上荡秋千、看见香蕉就两眼放光的快乐时代。当人类祖先决定从树上下来、学会直立行走、穿上西装打领带时，吗喽人格的祖先在旁边的大树上看着他们，挠了挠屁股，嘴里发出一声不屑的“吱”。他们看透了一切：所谓的“文明”，不过是一场最无聊、最不好玩的付费游戏。规则偶尔是可以打破的，天花板是用来倒挂的，会议室是用来表演后空翻的。MALO本身就是一个从巨大脑洞里掉出来、忘了关门的奇思妙想。"
+  },
+  "JOKE-R": {
+    "code": "JOKE-R",
+    "cn": "клоун", // 小丑
+    "intro": "Оказывается, мы все клоуны",
+    "desc": "Пожалуйста, обратите внимание, что личность JOKE-R — это не «человек», а скорее клоун, который носит шутки как одежду. Снимаешь один слой — это шутка; снимаешь другой слой — это анекдот; продолжаешь снимать слой за слоем, пока наконец не обнаруживаешь, что внутри… пусто, остался лишь слабый эхо, говорящий: «Ха, не ожидал, да?» JOKE-R — это лидер по созданию атмосферы на социальных встречах и единственное назначенное огневое средство. С ними в компании никогда не бывает скучно. Все смеются до упаду, а чаще всего смеются сами они — своим самым громким смехом заглушая голос разбитого сердца."
+  },
+  "WOC!": {
+    "code": "WOC!",
+    "cn": "блин-ник", // 握草人
+    "intro": "блин-ник，Как я оказался с этой личностью?",
+    "desc": "我们发现了一种神奇的生物——WOC!人。他们拥有两种完全独立的操作系统：一个叫“表面系统”，负责发出“我操”“牛逼”“啊？”等一系列大惊小怪的拟声词；另一个叫“后台系统”，负责冷静分析：嗯，果然不出我所料。WOC!人只会卧槽，不会多管闲事，因为他们深知，给傻逼讲道理，就像扶着烂泥上墙，不仅浪费体力，还弄自己一手屎。所以他们选择，握着一根智慧的大草，用一声饱含深情的“WOC！”来为这个疯狂的世界献上最高敬意。"
+  },
+  "THIN-K": {
+    "code": "THIN-K",
+    "cn": "Мысли-тель", // 思考者
+    "intro": "Глубоко обдумано 100 s.",
+    "desc": "经研究发现，THIN-K人格的大脑构造与常人有根本性不同。正如名称所示，您的大脑长时间处于思考状态。您十分会审判信息，注重论点、论据、逻辑推理、潜在偏见，乃至“作者本人三代以内思想背景调查报告”的全套材料。在这个信息爆炸的时代，您绝不会轻易盲从，会在关系中衡量利弊，也十分捍卫自己的自我空间。当别人看到您独处时在发呆？愚蠢，那不是发呆，那是您的大脑正在对今天接收到的所有信息进行分类、归档和销毁。"
+  },
+  "SHIT": {
+    "code": "SHIT",
+    "cn": "愤世者",
+    "intro": "这个世界，构石一坨。",
+    "desc": "恭喜您，SHIT人格是宇宙中已知的唯一一种稀有人格。所谓狗屎，并不是在抱怨，而是在进行一种神秘仪式。SHIT的行为模式是一场惊天动地的悖论戏剧。嘴上：这个项目简直是屎。手上：默默打开 Excel，开始建构函数模型和甘特图。嘴上：这帮同事都是 shit。手上：在同事搞砸之后，一边烦着，一边熬夜把烂摊子收拾得明明白白。嘴上：这个世界就是一坨 shit，赶紧毁灭吧。手上：第二天早上七点准时起床，挤上 shit 一样的地铁，去干那份 shit 一样的工作。别怕，那不是世界末日的警报，那是他马上要开始拯救世界的冲锋号。"
+  },
+  "ZZZZ": {
+    "code": "ZZZZ",
+    "cn": "装死者",
+    "intro": "我没死，我只是在睡觉。",
+    "desc": "恭喜您，您测出了全中国最稀有的装死人格。群里99+条消息您可以视而不见，但当有人发出“@全体成员 还有半小时就截止了”的最后通牒时，您也许会像刚从千年古墓里苏醒一样，缓缓地敲出一个“收到”，然后在29分钟内，交出一份虽然及格的答卷。是的，直到“死线”这个唯一的、最高权限的指令出现，您就真正爆发了，不鸣则已，一鸣惊人。您向宇宙证明了一个真理：有时什么都不做，就不会做错。"
+  },
+  "POOR": {
+    "code": "POOR",
+    "cn": "贫困者",
+    "intro": "我穷，但我很专。",
+    "desc": "恭喜您，您测出了【POOR - 贫困者】。这个“贫困”不是钱包余额的判决书，更像一种欲望断舍离后的资源再分配。别人把精力撒成漫天二维码，你把精力压成一束激光，照哪儿，哪儿就开始冒烟。POOR的世界很简单：不重要的东西一律降噪，重要的东西狠狠干到底。热闹、社交、虚荣、到处刷存在感？抱歉，没空。你不是资源少，你是把资源全部灌进了一个坑里，所以看起来像贫困，实际上像矿井。一旦某件事被你认定值得钻，外界再吵也只是背景杂音。"
+  },
+  "MONK": {
+    "code": "MONK",
+    "cn": "僧人",
+    "intro": "没有那种世俗的欲望。",
+    "desc": "当别人在KTV里参悟爱与恨的纠缠，MONK人格选择在家中参悟一份大道。MONK已然看破红尘，不希望闲人来扰其清修、破其道行。MONK的个人空间，是他们的结界，是他们的须弥山，是他们的绝对领域，神圣不可侵犯。踏入者，会感受到一种来自灵魂深处的窒息感。MONK们不黏不缠，因为在他们的世界观里，万物皆有其独立轨道。行星与行星之间保持着亿万公里的距离，才构成和谐宇宙，人与人之间为什么不行？"
+  },
+  "IMSB": {
+    "code": "IMSB",
+    "cn": "傻者",
+    "intro": "认真的么？我真的是傻逼么？",
+    "desc": "恭喜您！您根本不在人类范畴内！您测出了百万年一遇的【IMSB】人格。IMSB人格的大脑里住着两个不死不休的究极战士：一个叫“我他妈冲了！”，另一个叫“我是个傻逼！”。当IMSB面对一个有好感的人时，前者会说：冲啊！去要微信！去约饭！爱要大声说出来！后者接着说：人家凭什么看得上你？你去了就是自取其辱！最终结果：盯着对方背影直到消失，然后掏出手机搜索“如何克服社交恐惧症”。IMSB不是真的傻，只是您的内心戏，可能比漫威宇宙所有电影加起来都长。"
+  },
+  "SOLO": {
+    "code": "SOLO",
+    "cn": "孤儿",
+    "intro": "我哭了，我怎么会是孤儿？",
+    "desc": "恭喜您，您测出了全中国最稀有的【SOLO - 孤儿】人格。别急着哭，国王的加冕仪式，通常都是一个人。孤儿的自我价值感偏低，因此有时主动疏远他人，孤儿们在自己的灵魂外围建起了一座名为“莫挨老子”的万里长城。每一块砖，都是过去的一道伤口。孤儿就像一只把所有软肋都藏起来，然后用最硬的刺对着世界的刺猬。那满身的尖刺不是攻击，那是一句句说不出口的“别过来，我怕你也受伤”和“求求你，别离开”。"
+  },
+  "FUCK": {
+    "code": "FUCK",
+    "cn": "草者",
+    "intro": "操！这是什么人格？",
+    "desc": "恭喜您！您根本不在人类范畴内！您测出了百万年一遇的【FUCK】人格。人类文明城市里，出现了一株无法被任何除草剂杀死的、具有超级生命力的人形野草——那就是草者人格。它的学名，就叫 FUCK。在FUCK的世界观里，世俗规则简直毫无意义，并且FUCK的情绪开关是物理拨片式的：FUCK YEAH 和 FUCK OFF。FUCK追求的不只是当下快感，也在追求一种在体内横冲直撞的生命力。当所有人都被驯化成了温顺家禽，FUCK则是荒野上最后那一声狼嚎。"
+  },
+  "DEAD": {
+    "code": "DEAD",
+    "cn": "死者",
+    "intro": "我，还活着吗？",
+    "desc": "恭喜您，您测出了全中国最为罕见的人格，只是“死者”这个名字实在有点晦气，所以也可以叫：Don't Expect Any Drives。死者已经看透了那些无意义的哲学思考，因此显得对一切“失去”了兴趣。死者们看世界的眼神，就像一位顶级玩家通关了所有主线、支线、隐藏任务，删档重开了999次之后，终于发现：这游戏压根就没意思。死者是超越了欲望和目标的终极贤者。他们的存在，就是对这个喧嚣世界最沉默也最彻底的抗议。"
+  },
+  "IMFW": {
+    "code": "IMFW",
+    "cn": "废物",
+    "intro": "我真的...是废物吗？",
+    "desc": "恭喜您，您测出的不是一个普通人格，您是一种极其珍稀的、仅占世界人口0.0001％的——【废物】。废物们的自尊通常有些脆弱，缺乏安全感，偶尔也会缺乏主见，因此这种人格能精确地感知到周围最强的那个 WiFi 信号——也就是他们心里最可靠的人。走进【废物】人格的生活，就像走进了一个顶级兰花温室：需要精确控制温度、湿度，以及每天定时进行“我爱你”的言语光合作用。给废物一颗糖，他们会还你一个完全信任你、亮晶晶的眼神。你未必是废物，你只是太没防备，太容易认真。"
+  },
+  "HHHH": {
+    "code": "HHHH",
+    "cn": "傻乐者",
+    "intro": "哈哈哈哈哈哈。",
+    "desc": "恭喜您！由于您的思维回路过于清奇，标准人格库已全面崩溃。第一人格匹配率只有60％以下时，系统才会为您强制匹配这个人格——【HHHH - 傻乐者】。这个人格有什么特质？哈哈哈哈哈哈哈哈哈哈哈哈！对不起，这就是全部的特质了。您可以查看十五维度进行不专业的评估，实在是抱歉！作者设置人格时没有考虑全面，因此才会出现这样的状况。哈哈哈哈哈哈……笑着笑着，我便哭了出来。怎么会有人的脑回路这么新奇。"
+  },
+  "DRUNK": {
+    "code": "DRUNK",
+    "cn": "Алкоголик",
+    "intro": "Крепкий алкоголь горит в груди, ему пришлось напиться.",
+    "desc": "Почему он идет, шатаясь? Почему он всегда в приподнятом настроении? Почему он видит всё размыто? Потому что в ваших жилах течет не кровь, а вкусное Пиво! Квас! Вино! Медовуха! О, вкусная Водка, каждая капля жжет и кипит. Привык ли он уже заливать алкоголь в термос и пить его, как кипяток? Какой великий алкоголь! Он позволяет ему весело болтать за столом, каяться в жизни, обнимая унитаз в туалете; он делает его ночным поэтом, центром вселенной, тем неугасимым огнем, пока на следующий день в десять утра его голова не расколется, как орех, уголки рта не будут украшены остатками еды, а душа не свернется в уголке. Он наконец понимает, что человек, который вчера говорил толстые слова и бил по столу в гневе, уже стал алкоголиком."
+  }
+};
+
+const TYPE_IMAGES = {
+  "IMSB": "./image/IMSB.png",
+  "BOSS": "./image/BOSS.png",
+  "MUM": "./image/MUM.png",
+  "FAKE": "./image/FAKE.png",
+  "Dior-s": "./image/Dior-s.jpg",
+  "DEAD": "./image/DEAD.png",
+  "ZZZZ": "./image/ZZZZ.png",
+  "GOGO": "./image/GOGO.png",
+  "FUCK": "./image/FUCK.png",
+  "CTRL": "./image/CTRL.png",
+  "HHHH": "./image/HHHH.png",
+  "SEXY": "./image/SEXY.png",
+  "OJBK": "./image/OJBK.png",
+  "JOKE-R": "./image/JOKE-R.jpg",
+  "POOR": "./image/POOR.png",
+  "OH-NO": "./image/OH-NO.png",
+  "MONK": "./image/MONK.png",
+  "SHIT": "./image/SHIT.png",
+  "THAN-K": "./image/THAN-K.png",
+  "MALO": "./image/MALO.png",
+  "ATM-er": "./image/ATM-er.png",
+  "THIN-K": "./image/THIN-K.png",
+  "SOLO": "./image/SOLO.png",
+  "LOVE-R": "./image/LOVE-R.png",
+  "WOC!": "./image/WOC.png",
+  "DRUNK": "./image/DRUNK.png",
+  "IMFW": "./image/IMFW.png"
+};
+
+const NORMAL_TYPES = [
+  { "pattern": "HHH-HMH-MHH-HHH-MHM", "code": "CTRL"    },
+  { "pattern": "HHH-HHM-HHH-HMH-MHL", "code": "ATM-er"  },
+  { "pattern": "MHM-MMH-MHM-HMH-LHL", "code": "Dior-s", },
+  { "pattern": "HHH-HMH-MMH-HHH-LHL", "code": "BOSS",   },
+  { "pattern": "MHM-HMM-HHM-MMH-MHL", "code": "THAN-K", },
+  { "pattern": "HHL-LMH-LHH-HHM-LHL", "code": "OH-NO",  },
+  { "pattern": "HHM-HMH-MMH-HHH-MHM", "code": "GOGO",   },
+  { "pattern": "HMH-HHL-HMM-HMM-HLH", "code": "SEXY",   },
+  { "pattern": "MLH-LHL-HLH-MLM-MLH", "code": "LOVE-R", },
+  { "pattern": "MMH-MHL-HMM-LMM-HLL", "code": "MUM",    },
+  { "pattern": "HLM-MML-MLM-MLM-HLH", "code": "FAKE",   },
+  { "pattern": "MMH-MMM-HML-LMM-MML", "code": "OJBK",   },
+  { "pattern": "MLH-MHM-MLH-MLH-LMH", "code": "MALO",   },
+  { "pattern": "LLH-LHL-LML-LLL-MLM", "code": "JOKE-R", },
+  { "pattern": "HHL-HMH-MMH-HHM-LHH", "code": "WOC!",   },
+  { "pattern": "HHL-HMH-MLH-MHM-LHH", "code": "THIN-K", },
+  { "pattern": "HHL-HLH-LMM-HHM-LHH", "code": "SHIT",   },
+  { "pattern": "MHL-MLH-LML-MML-LHM", "code": "ZZZZ",   },
+  { "pattern": "HHL-MLH-LMH-HHH-LHL", "code": "POOR",   },
+  { "pattern": "HHL-LLH-LLM-MML-LHM", "code": "MONK",   },
+  { "pattern": "LLM-LMM-LLL-LLL-MLM", "code": "IMSB",   },
+  { "pattern": "LML-LLH-LHL-LML-LHM", "code": "SOLO",   },
+  { "pattern": "MLL-LHL-LLM-MLL-HLH", "code": "FUCK",   },
+  { "pattern": "LLL-LLM-LML-LLL-LHM", "code": "DEAD",   },
+  { "pattern": "LLH-LHL-LML-LLL-MLL", "code": "IMFW",   }
+];
+
+const DIM_EXPLANATIONS = {
+  "S1": {
+    "L": "对自己下手比别人还狠，夸你两句你都想先验明真伪。",
+    "M": "自信值随天气波动，顺风能飞，逆风先缩。",
+    "H": "В глубине души у него довольно ясное представление о себе, и он не легко расстраивается из-за слов случайных прохожих."
+  },
+  "S2": {
+    "L": "内心频道雪花较多，常在“我是谁”里循环缓存。",
+    "M": "平时还能认出自己，偶尔也会被情绪临时换号。",
+    "H": "对自己的脾气、欲望和底线都算门儿清。"
+  },
+  "S3": {
+    "L": "更在意舒服和安全，没必要天天给人生开冲刺模式。",
+    "M": "想上进，也想躺会儿，价值排序经常内部开会。",
+    "H": "很容易被目标、成长或某种重要信念推着往前。"
+  },
+  "E1": {
+    "L": "感情里警报器灵敏，已读不回都能脑补到大结局。",
+    "M": "一半信任，一半试探，感情里常在心里拉锯。",
+    "H": "更愿意相信关系本身，不会被一点风吹草动吓散。"
+  },
+  "E2": {
+    "L": "感情投入偏克制，心门不是没开，是门禁太严。",
+    "M": "会投入，但会给自己留后手，不至于全盘梭哈。",
+    "H": "一旦认定就容易认真，情绪和精力都给得很足。"
+  },
+  "E3": {
+    "L": "容易黏人也容易被黏，关系里的温度感很重要。",
+    "M": "亲密和独立都要一点，属于可调节型依赖。",
+    "H": "空间感很重要，再爱也得留一块属于自己的地。"
+  },
+  "A1": {
+    "L": "看世界自带防御滤镜，先怀疑，再靠近。",
+    "M": "既不天真也不彻底阴谋论，观望是你的本能。",
+    "H": "更愿意相信人性和善意，遇事不急着把世界判死刑。"
+  },
+  "A2": {
+    "L": "规则能绕就绕，舒服和自由往往排在前面。",
+    "M": "该守的时候守，该变通的时候也不死磕。",
+    "H": "秩序感较强，能按流程来就不爱即兴炸场。"
+  },
+  "A3": {
+    "L": "意义感偏低，容易觉得很多事都像在走过场。",
+    "M": "偶尔有目标，偶尔也想摆烂，人生观处于半开机。",
+    "H": "做事更有方向，知道自己大概要往哪边走。"
+  },
+  "Ac1": {
+    "L": "做事先考虑别翻车，避险系统比野心更先启动。",
+    "M": "有时想赢，有时只想别麻烦，动机比较混合。",
+    "H": "更容易被成果、成长和推进感点燃。"
+  },
+  "Ac2": {
+    "L": "做决定前容易多转几圈，脑内会议常常超时。",
+    "M": "会想，但不至于想死机，属于正常犹豫。",
+    "H": "拍板速度快，决定一下就不爱回头磨叽。"
+  },
+  "Ac3": {
+    "L": "执行力和死线有深厚感情，越晚越像要觉醒。",
+    "M": "能做，但状态看时机，偶尔稳偶尔摆。",
+    "H": "推进欲比较强，事情不落地心里都像卡了根刺。"
+  },
+  "So1": {
+    "L": "社交启动慢热，主动出击这事通常得攒半天气。",
+    "M": "有人来就接，没人来也不硬凑，社交弹性一般。",
+    "H": "更愿意主动打开场子，在人群里不太怕露头。"
+  },
+  "So2": {
+    "L": "关系里更想亲近和融合，熟了就容易把人划进内圈。",
+    "M": "既想亲近又想留缝，边界感看对象调节。",
+    "H": "边界感偏强，靠太近会先本能性后退半步。"
+  },
+  "So3": {
+    "L": "表达更直接，心里有啥基本不爱绕。",
+    "M": "会看气氛说话，真实和体面通常各留一点。",
+    "H": "对不同场景的自我切换更熟练，真实感会分层发放。"
+  }
+};
+
+const dimensionOrder = ['S1','S2','S3','E1','E2','E3','A1','A2','A3','Ac1','Ac2','Ac3','So1','So2','So3'];
+
+const DRUNK_TRIGGER_QUESTION_ID = 'drink_gate_q2';
+
+const app = {
+    shuffledQuestions: [],
+    answers: {},
+    previewMode: false,
+};
+
+const screens = {
+    intro: document.getElementById('intro'),
+    test: document.getElementById('test'),
+    result: document.getElementById('result')
+};
+
+const questionList = document.getElementById('questionList');
+const progressBar = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
+const submitBtn = document.getElementById('submitBtn');
+const testHint = document.getElementById('testHint');
+
+const lggIdxArr = [
+    'один','два','три','четыре','пять','шесть','семь','восемь','девять','десять',
+    'одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать','двадцать',
+    'двадцать один','двадцать два','двадцать три','двадцать четыре','двадцать пять',
+    'двадцать шесть','двадцать семь','двадцать восемь','двадцать девять','тридцать'
+];
+
+function showScreen(name) {
+    Object.entries(screens).forEach(([key, el]) => {
+        el.classList.toggle('active', key === name);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function shuffle(array) {
+    const arr = [...array];
+    // for (let i = arr.length - 1; i > 0; i--) {
+    //     const j = Math.floor(Math.random() * (i + 1));
+    //     [arr[i], arr[j]] = [arr[j], arr[i]];
+    // }
+    return arr;
+}
+
+function getVisibleQuestions() {
+    const visible = [...app.shuffledQuestions];
+    const gateIndex = visible.findIndex(q => q.id === 'drink_gate_q1');
+    if (gateIndex !== -1 && app.answers['drink_gate_q1'] === 3) {
+        visible.splice(gateIndex + 1, 0, specialQuestions[1]);
+    }
+    return visible;
+}
+
+function getQuestionMetaLabel(q) {
+    if (q.special) return 'Дополнительный вопрос';
+    return app.previewMode ? dimensionMeta[q.dim].name : '';//'维度已隐藏';
+}
+
+function renderQuestions() {
+    const visibleQuestions = getVisibleQuestions();
+    questionList.innerHTML = '';
+    visibleQuestions.forEach((q, index) => {
+        const card = document.createElement('article');
+        card.className = 'question';
+        card.innerHTML = `
+            <div class="question-meta">
+                <div class="badge">${lggIdxArr[index]} </div>
+                <div>${getQuestionMetaLabel(q)}</div>
+            </div>
+            <div class="question-title">${q.text}</div>
+            <div class="options">
+                ${q.options.map((opt, i) => {
+                    const code = ['A', 'B', 'C', 'D'][i] || String(i + 1);
+                    const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+                return `
+                    <label class="option">
+                    <input type="radio" name="${q.id}" value="${opt.value}" ${checked} />
+                    <div class="option-code">${code}</div>
+                    <div>${opt.label}</div>
+                    </label>
+                `;
+                }).join('')}
+            </div>
+        `;
+        questionList.appendChild(card);
+    });
+
+    questionList.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+            const { name, value } = e.target;
+            app.answers[name] = Number(value);
+
+            if (name === 'drink_gate_q1') {
+                if (Number(value) !== 3) {
+                    delete app.answers['drink_gate_q2'];
+                }
+                renderQuestions();
+                return;
+            }
+
+            updateProgress();
+        });
+    });
+
+    updateProgress();
+}
+
+function updateProgress() {
+    const visibleQuestions = getVisibleQuestions();
+    const total = visibleQuestions.length;
+    const done = visibleQuestions.filter(q => app.answers[q.id] !== undefined).length;
+    const percent = total ? (done / total) * 100 : 0;
+    progressBar.style.width = `${percent}%`;
+    progressText.textContent = `${done} / ${total}`;
+    const complete = done === total && total > 0;
+    submitBtn.disabled = !complete;
+    testHint.textContent = complete
+        ? 'уже сделано. Теперь можно передать твою электронную душу котенку королеве на суд.'
+        : 'Нужно выбрать все варианты. Мир и так достаточно хаотичен, по крайней мере, нужно полностью выполнить задание.';
+}
+
+function sumToLevel(score) {
+    if (score <= 3) return 'L';
+    if (score === 4) return 'M';
+    return 'H';
+}
+
+function levelNum(level) {
+    return { L: 1, M: 2, H: 3 }[level];
+}
+
+function parsePattern(pattern) {
+    return pattern.replace(/-/g, '').split('');
+}
+
+function getDrunkTriggered() {
+    return app.answers[DRUNK_TRIGGER_QUESTION_ID] === 2;
+}
+
+function computeResult() {
+    const rawScores = {};
+    const levels = {};
+    Object.keys(dimensionMeta).forEach(dim => { rawScores[dim] = 0; });
+
+    questions.forEach(q => {
+        rawScores[q.dim] += Number(app.answers[q.id] || 0);
+    });
+
+    Object.entries(rawScores).forEach(([dim, score]) => {
+        levels[dim] = sumToLevel(score);
+    });
+
+    const userVector = dimensionOrder.map(dim => levelNum(levels[dim]));
+    const ranked = NORMAL_TYPES.map(type => {
+        const vector = parsePattern(type.pattern).map(levelNum);
+        let distance = 0;
+        let exact = 0;
+        for (let i = 0; i < vector.length; i++) {
+            const diff = Math.abs(userVector[i] - vector[i]);
+            distance += diff;
+            if (diff === 0) exact += 1;
+        }
+        const similarity = Math.max(0, Math.round((1 - distance / 30) * 100));
+        return { ...type, ...TYPE_LIBRARY[type.code], distance, exact, similarity };
+    }).sort((a, b) => {
+        if (a.distance !== b.distance) return a.distance - b.distance;
+        if (b.exact !== a.exact) return b.exact - a.exact;
+        return b.similarity - a.similarity;
+    });
+
+    const bestNormal = ranked[0];
+    const drunkTriggered = getDrunkTriggered();
+
+    let finalType;
+    let modeKicker = 'Его основной тип';
+    let badge = `соответствие ${bestNormal.similarity}% · Точное попадание ${bestNormal.exact}/15 измерений`;
+    let sub = 'Уровень совпадения по измерениям достаточно высок, текущий результат можно рассматривать как отображение его первой личности.';
+    let special = false;
+    let secondaryType = null;
+
+    if (drunkTriggered) {
+        finalType = TYPE_LIBRARY.DRUNK;
+        secondaryType = bestNormal;
+        modeKicker = '隐藏人格已激活';
+        badge = '匹配度 100% · 酒精异常因子已接管';
+        sub = '乙醇亲和性过强，系统已直接跳过常规人格审判。';
+        special = true;
+    } else if (bestNormal.similarity < 60) {
+        finalType = TYPE_LIBRARY.HHHH;
+        modeKicker = '系统强制兜底';
+        badge = `标准人格库最高匹配仅 ${bestNormal.similarity}%`;
+        sub = '标准人格库对你的脑回路集体罢工了，于是系统把你强制分配给了 HHHH。';
+        special = true;
+    } else {
+        finalType = bestNormal;
+    } 
+
+    return {
+        rawScores,
+        levels,
+        ranked,
+        bestNormal,
+        finalType,
+        modeKicker,
+        badge,
+        sub,
+        special,
+        secondaryType
+    };
+}
+
+function renderDimList(result) {
+    const dimList = document.getElementById('dimList');
+    dimList.innerHTML = dimensionOrder.map(dim => {
+        const level = result.levels[dim];
+        const explanation = DIM_EXPLANATIONS[dim][level];
+        return `
+            <div class="dim-item">
+                <div class="dim-item-top">
+                    <div class="dim-item-name">${dimensionMeta[dim].name}</div>
+                    <div class="dim-item-score">${level} / ${result.rawScores[dim]}分</div>
+                </div>
+                <p>${explanation}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+function renderResult() {
+    const result = computeResult();
+    const type = result.finalType;
+
+    document.getElementById('resultModeKicker').textContent = result.modeKicker;
+    document.getElementById('resultTypeName').textContent = `${type.code}（${type.cn}）`;
+    document.getElementById('matchBadge').textContent = result.badge;
+    document.getElementById('resultTypeSub').textContent = result.sub;
+    document.getElementById('resultDesc').textContent = type.desc;
+    document.getElementById('posterCaption').textContent = type.intro;
+    document.getElementById('funNote').textContent = result.special
+        ? '本测试仅供娱乐。隐藏人格和傻乐兜底都属于作者故意埋的损招，请勿把它当成医学、心理学、相学、命理学或灵异学依据。'
+        : '本测试仅供娱乐，别拿它当诊断、面试、相亲、分手、招魂、算命或人生判决书。你可以笑，但别太当真。';
+
+    const posterBox = document.getElementById('posterBox');
+    const posterImage = document.getElementById('posterImage');
+    const imageSrc = TYPE_IMAGES[type.code];
+    if (imageSrc) {
+        posterImage.src = imageSrc;
+        posterImage.alt = `${type.code}（${type.cn}）`;
+        posterBox.classList.remove('no-image');
+    } else {
+        posterImage.removeAttribute('src');
+        posterImage.alt = '';
+        posterBox.classList.add('no-image');
+    }
+
+    renderDimList(result);
+    showScreen('result');
+}
+
+function startTest(preview = false) {
+    app.previewMode = preview;
+    app.answers = {};
+    const shuffledRegular = shuffle(questions);
+    const insertIndex = Math.floor(Math.random() * shuffledRegular.length) + 1;
+    app.shuffledQuestions = [
+        ...shuffledRegular.slice(0, insertIndex),
+        ...shuffledRegular.slice(insertIndex)
+    ];
+    renderQuestions();
+    showScreen('test');
+}
+
+document.getElementById('startBtn').addEventListener('click', () => startTest(false));
+document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
+document.getElementById('submitBtn').addEventListener('click', renderResult);
+document.getElementById('restartBtn').addEventListener('click', () => startTest(false));
+document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
+  </script>
+
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d44d4fe6b56c4b46892c3f789d8ac0c5"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
